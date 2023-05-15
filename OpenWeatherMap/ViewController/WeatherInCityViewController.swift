@@ -30,7 +30,7 @@ final class WeatherInCityViewController: UITableViewController {
         super.viewDidLoad()
         setupSearchController()
         setupNavigationBar()
-        networkManager.fetchWeather()
+        
     }
     
 
@@ -69,12 +69,13 @@ final class WeatherInCityViewController: UITableViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
     }
     
-    private func fetchWeather() {
-        networkManager.fetchCity(from: Link.geoURL.url) { [weak self] result in
+    private func fetchCity(){
+        networkManager.fetch(Cities.self, from: Link.geoURL.url) { [weak self] result in
             switch result {
-            case .success(let weather):
+            case .success(let city):
                 self?.cities = city
                 self?.tableView.reloadData()
+                print(city)
             case .failure(let error):
                 print(error)
             }

@@ -19,12 +19,11 @@ struct City: Decodable {
     var cityAndCountry: String {
         return "\(name) (\(countryName))"
     }
- 
 }
 
 struct Weather: Decodable {
     let conditionalId: Int
-    let cityName: String
+    let cityName: City
     let temperature: Double
     let precipitation: Double
     let windSpeed: Double
@@ -38,43 +37,45 @@ struct Weather: Decodable {
             """
     }
     
-    init(from weatherData:[String: Any]) {
-            conditionalId = weatherData["conditionalId"] as? Int ?? 0
-            cityName = weatherData["cityName"] as? String ?? ""
-            temperature = weatherData["temperature"] as? Double ?? 0.0
-            precipitation = weatherData["precipitation"] as? Double ?? 0.0
-            windSpeed = weatherData["windSpeed"] as? Double ?? 0.0
+    
+    var conditionalName: String {
+        switch conditionalId {
+        case 200...232:
+            return "cloud.bolt"
+        case 300...321:
+            return "cloud.drizzle"
+        case 500...531:
+            return "cloud.rain"
+        case 600...622:
+            return "cloud.snow"
+        case 701...781:
+            return "cloud.fog"
+        case 800:
+            return "sun.max"
+        case 801...804:
+            return "cloud.bolt"
+        default:
+            return "cloud"
+        }
     }
-
-
-var conditionalName: String {
-    switch conditionalId {
-    case 200...232:
-        return "cloud.bolt"
-    case 300...321:
-        return "cloud.drizzle"
-    case 500...531:
-        return "cloud.rain"
-    case 600...622:
-        return "cloud.snow"
-    case 701...781:
-        return "cloud.fog"
-    case 800:
-        return "sun.max"
-    case 801...804:
-        return "cloud.bolt"
-    default:
-        return "cloud"
+    var formattedTemperature: String {
+        return String(format: "%.1f°", temperature)
     }
 }
-var formattedTemperature: String {
-    return String(format: "%.1f°", temperature)
+
+enum Link {
+    case weatherURL
+    case geoURL
+    
+    var url: URL {
+        switch self {
+        case .weatherURL:
+            return URL(string: "https://api.openweathermap.org/data/2.5/weather?appid=c73e6f64b3e86d491e0ea199c3a89e47&units=metric&q=Mumbai")!
+        case .geoURL:
+            return URL(string: "https://secure.geonames.org/search?featureCode=PPLA&maxRows=10&username=dmitkeller")!
+        }
+    }
 }
-
-   
-
-}
-
 
 
 

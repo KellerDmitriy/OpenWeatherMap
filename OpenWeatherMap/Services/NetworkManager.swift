@@ -6,21 +6,12 @@
 //
 
 import Foundation
-import Alamofire
 
 
-enum Link {
-    case weatherURL
-    case geoURL
-    
-    var url: URL {
-        switch self {
-        case .weatherURL:
-            return URL(string: "https://api.openweathermap.org/data/2.5/weather?appid=c73e6f64b3e86d491e0ea199c3a89e47&units=metric&q=Mumbai")!
-        case .geoURL:
-            return URL(string: "https://secure.geonames.org/search?featureCode=PPLA&maxRows=10&username=dmitkeller")!
-        }
-    }
+enum NetworkError: Error {
+    case invalidURL
+    case noData
+    case decodingError
 }
 
 final class NetworkManager {
@@ -28,19 +19,26 @@ final class NetworkManager {
     
     private init() {}
     
-    func fetchCity(from url: URL, completion: @escaping(Result<[City], AFError>) -> Void) {
-        AF.request(url)
-            .validate()
-            .responseJSON { dataResponse in
-                switch dataResponse.result {
-                case .success(let data):
-                    let cities = 
-                    completion(.success(data))
-                case .failure(let error):
-                    print(error)
-                }
+    func fetch<T: Decodable>(_ type: T.Type, from url: URL?, with completion: @escaping(Result<T, NetworkError>) -> Void) {
+        guard let url = url else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data else {
+                completion(.failure(.noData))
+                print(error?.localizedDescription ?? "No error description")
+                return
             }
+            do {
+                let dataModel = try JSONDecoder().decode(T.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(dataModel))
+                }
+            } catch {
+                completion(.failure(.decodingError))
+            }
+        }.resume()
     }
-    
-
 }

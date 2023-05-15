@@ -16,7 +16,6 @@
 		E1483DF82A1101B000974A42 /* WeatherInCityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1483DF72A1101B000974A42 /* WeatherInCityViewController.swift */; };
 		E1483DFB2A11027600974A42 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1483DFA2A11027600974A42 /* NetworkManager.swift */; };
 		E1483DFD2A11034A00974A42 /* WeatherAndCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1483DFC2A11034A00974A42 /* WeatherAndCity.swift */; };
-		E1483E012A11180100974A42 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E1483E002A11180100974A42 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,7 +37,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E1483E012A11180100974A42 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,7 +133,6 @@
 			);
 			name = OpenWeatherMap;
 			packageProductDependencies = (
-				E1483E002A11180100974A42 /* Alamofire */,
 			);
 			productName = OpenWeatherMap;
 			productReference = E1483DDD2A10FFB000974A42 /* OpenWeatherMap.app */;
@@ -437,14 +434,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		E1483E002A11180100974A42 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E1483DFF2A11180100974A42 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E1483DD52A10FFB000974A42 /* Project object */;
 }
